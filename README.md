@@ -72,18 +72,18 @@ Arguments:
 
 # Properties
 
-Equatorial Coordinates: `equ`, `equa`, `equatorial`
-Horizon Coordinates: `horiz`, `horizontal`
-Ecliptic Coordinates: `ecl`, `ecliptic`
-Distance: `dist`, `distance`
-(Brightness) Magnitude: `mag`, `magnitude`, `brightness`
-Phase Info: `phase`
-Phase Emoji: `phaseemoji`
-Phase Name; `phasename`
-Angular Diameter: `angdia`
-Illuminated Percent: `phaseprecent`, `illumfrac`
-Rise and set times: `rise`, `set`
-Angle between objects: `angbetween:{Object}`
+* Equatorial Coordinates: `equ`, `equa`, `equatorial`
+* Horizon Coordinates: `horiz`, `horizontal`
+* Ecliptic Coordinates: `ecl`, `ecliptic`
+* Distance: `dist`, `distance`
+* (Brightness) Magnitude: `mag`, `magnitude`, `brightness`
+* Phase Info: `phase`
+* Phase Emoji: `phaseemoji`
+* Phase Name; `phasename`
+* Angular Diameter: `angdia`
+* Illuminated Percent: `phaseprecent`, `illumfrac`
+* Rise and set times: `rise`, `set`
+* Angle between objects: `angbetween:{Object}`
 
 # Input formatting
 
