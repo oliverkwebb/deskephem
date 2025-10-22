@@ -1,18 +1,12 @@
 use crate::value::*;
 use pracstro::{coord, time};
 
-/// A structure representing the position, magnitude, and proper motion of a star
 #[derive(Clone, Debug, PartialEq)]
 pub struct Star {
-    /// The stars location at the J2000 Epoch
     pub loc_j2k: coord::Coord,
-    /// The stars magnitude
     pub mag: f64,
-    /// The stars parallax
     pub pi: time::Angle,
-    /// The stars proper longitudial motion
     pub pm_ra: time::Angle,
-    /// The stars proper latitudanal motion
     pub pm_dec: time::Angle,
 }
 

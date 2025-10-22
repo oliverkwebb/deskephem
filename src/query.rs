@@ -42,7 +42,7 @@ impl fmt::Display for Property {
     }
 }
 
-pub fn property_of(obj: &CelObj, q: Property, rf: &RefFrame) -> Result<Value, String> {
+pub fn property_of(obj: &CelObj, q: Property, rf: &RefFrame) -> Result<Value, &'static str> {
     fn hemisphere(ll: Option<(pracstro::time::Angle, pracstro::time::Angle)>) -> bool {
         if let Some((lat, _)) = ll {
             lat.to_latitude().degrees() <= 0.0
@@ -74,7 +74,7 @@ pub fn property_of(obj: &CelObj, q: Property, rf: &RefFrame) -> Result<Value, St
         (Property::Equatorial, CelObj::Crd(s)) => Ok(Value::Crd(s, CrdView::Equatorial)),
         (Property::Horizontal, _) => {
             if rf.latlong.is_none() {
-                return Err("Need to specify a lat/long".to_string());
+                return Err("Need to specify a lat/long with -l");
             };
             let Value::Crd(p, _) = property_of(obj, Property::Equatorial, rf)? else {
                 unreachable!();
@@ -89,7 +89,7 @@ pub fn property_of(obj: &CelObj, q: Property, rf: &RefFrame) -> Result<Value, St
         }
         (Property::Rise, _) => {
             if rf.latlong.is_none() {
-                return Err("Need to specify a lat/long".to_string());
+                return Err("Need to specify a lat/long with -l");
             };
             let Value::Crd(p, _) = property_of(obj, Property::Equatorial, rf)? else {
                 unreachable!();
@@ -101,7 +101,7 @@ pub fn property_of(obj: &CelObj, q: Property, rf: &RefFrame) -> Result<Value, St
         }
         (Property::Set, _) => {
             if rf.latlong.is_none() {
-                return Err("Need to specify a lat/long".to_string());
+                return Err("Need to specify a lat/long with -l");
             };
             let Value::Crd(p, _) = property_of(obj, Property::Equatorial, rf)? else {
                 unreachable!();
@@ -166,10 +166,31 @@ pub fn property_of(obj: &CelObj, q: Property, rf: &RefFrame) -> Result<Value, St
         (Property::AngDia, CelObj::Moon) => {
             Ok(Value::Ang(moon::MOON.angdia(rf.date), AngView::Angle))
         }
-        (Property::PhaseDefault, _) => Err("Can't get phase of a star".to_string()),
-        (_, CelObj::Crd(_)) => Err("Can't get that property for a raw coordinate".to_string()),
-        (Property::AngDia, CelObj::Star(_)) => {
-            Err("Angular diameter of star not known".to_string())
-        }
+        (Property::PhaseDefault, _) => Err("Can't get phase of a star"),
+        (_, CelObj::Crd(_)) => Err("Can't get that property for a raw coordinate"),
+        (Property::AngDia, CelObj::Star(_)) => Err("Angular diameter of star not known"),
     }
+}
+
+/// An object and a CSV list of properties. The return stack is these properties.
+pub fn run(
+    object: &CelObj,
+    proplist: &[Property],
+    latlong: Location,
+    date: time::Date,
+) -> Result<Vec<Value>, &'static str> {
+    Ok(proplist
+        .iter()
+        .map(|prop| {
+            property_of(
+                object,
+                prop.clone(),
+                &RefFrame {
+                    latlong,
+                    date,
+                },
+            )
+            .unwrap_or_else(|e| panic!("Error on property {prop}: {e}"))
+        })
+        .collect())
 }

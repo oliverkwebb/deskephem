@@ -1,7 +1,7 @@
 [package]
-name = "webephem"
-version = "1.0.0"
-description = "Web Astronomy Calculator and Ephemeris Generator"
+name = "deskephem"
+version = "1.3.0"
+description = "CLI Astronomy Calculator and Ephemeris Generator"
 authors = ["Oliver Webb <oliverwebb8192@gmail.com>"]
 license = "0BSD"
 edition = "2021"
@@ -9,10 +9,7 @@ readme = "README.md"
 keywords = ["astronomy", "cli"]
 repository = "https://github.com/oliverkwebb/deskephem"
 
-[lib]
-crate-type = ["cdylib", "rlib"]
-
 [dependencies]
+chrono = "0.4.40"
+clap = { version = "4.5.34", features = ["cargo"] }
 pracstro = "1.0.0"
-wasm-bindgen = "0.2.104"
-web-sys = { version = "0.3.81", features = ["console"] }

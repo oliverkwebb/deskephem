@@ -81,8 +81,17 @@ impl fmt::Display for Value {
         }
 
         if !f.alternate() {
+            use chrono::prelude::*;
             match self {
-                Value::Date(d) => write!(f, "{}", d.unix()),
+                Value::Date(d) => write!(
+                    f,
+                    "{}",
+                    DateTime::<Local>::from(
+                        DateTime::from_timestamp(d.unix() as i64, 0)
+                            .expect("Failed to Format Date")
+                    )
+                    .format("%Y-%m-%dT%T")
+                ),
                 Value::Ang(p, AngView::Angle) => {
                     let (d, m, s) = p.degminsec();
                     write!(f, "{:02}°{:02}′{:02.1}″", d, m, s)
@@ -157,7 +166,15 @@ impl fmt::Display for Value {
                     if d.is_none() {
                         write!(f, "none")
                     } else {
-                        write!(f, "{}", d.unwrap().unix())
+                        write!(
+                            f,
+                            "{}",
+                            DateTime::<Local>::from(
+                                DateTime::from_timestamp(d.unwrap().unix() as i64, 0)
+                                    .expect("Failed to Format Date")
+                            )
+                            .format("%H:%M")
+                        )
                     }
                 }
             }
