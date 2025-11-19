@@ -121,7 +121,7 @@ impl fmt::Display for Value {
                 }
                 Value::Crd(c, CrdView::Horizontal(rf)) => {
                     let (lat, long) = rf.latlong.unwrap();
-                    let d = c.horizon(rf.date, rf.date.time(), lat, long);
+                    let d = c.horizon(rf.date, lat, long);
                     write!(
                         f,
                         "{} {}",
@@ -209,7 +209,7 @@ impl fmt::Display for Value {
                 }
                 Value::Crd(c, CrdView::Horizontal(rf)) => {
                     let (lat, long) = rf.latlong.unwrap();
-                    let d = c.horizon(rf.date, rf.date.time(), lat, long);
+                    let d = c.horizon(rf.date, lat, long);
                     write!(
                         f,
                         "[{:#}, {:#}]",
